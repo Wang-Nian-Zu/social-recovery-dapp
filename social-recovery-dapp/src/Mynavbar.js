@@ -3,9 +3,9 @@ import { Navbar, Nav, Container } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Web3 from 'web3';
 import HomePage from './pages/HomePage.js';
-import Contacts from './pages/Contacts.js';
-import TodoList from './pages/TodoList.js';
-import Election from './pages/Election.js';
+import GuardianManagement from './pages/GuardianManagement.js';
+import AccountRecovery from './pages/AccountRecovery.js';
+import AccountManagement from './pages/AccountManagement.js';
 import ScrollToTop from "./ScrollToTop.js";
 import './Mynavbar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -25,7 +25,7 @@ const Mynavbar = () => {
         <Router>
             <Navbar bg="dark" expand="lg" data-bs-theme="dark" className="sticky-top">
                 <Container fluid>
-                    <Navbar.Brand as={Link} to={"/"}>ℕ𝕒𝕞𝕖ℤ𝕠𝕠'𝕤 𝔻𝕒𝕡𝕡</Navbar.Brand>
+                    <Navbar.Brand as={Link} to={"/"}>𝕊𝕠𝕔𝕚𝕒𝕝 ℝ𝕖𝕔𝕠𝕧𝕖𝕣𝕪 𝕎𝕒𝕝𝕝𝕖𝕥</Navbar.Brand>
                     <Navbar.Collapse id="navbarScroll">
                         <Nav
                             className="me-auto my-2 my-lg-0"
@@ -33,9 +33,9 @@ const Mynavbar = () => {
                             navbarScroll
                         >
                             <Nav.Link as={Link} to={"/"}> 首頁 </Nav.Link>
-                            <Nav.Link as={Link} to={"/contacts"}> 聯絡人列表 </Nav.Link>
-                            <Nav.Link as={Link} to={"/todolist"}> 待辦事項 </Nav.Link>
-                            <Nav.Link as={Link} to={"/election"}> 投票 </Nav.Link>
+                            <Nav.Link as={Link} to={"/accountManagement"}> 存款/提款 </Nav.Link>
+                            <Nav.Link as={Link} to={"/guardianManagement"}> 監護人列表 </Nav.Link>
+                            <Nav.Link as={Link} to={"/accountRecovery"}> 帳戶復原 </Nav.Link>
                         </Nav>
                         <Nav navbarScroll>
                             <div className="d-flex w-100">
@@ -51,9 +51,9 @@ const Mynavbar = () => {
                 <ScrollToTop />
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/contacts" element={<Contacts />} />
-                    <Route path="/todolist" element={<TodoList />} />
-                    <Route path="/election" element={<Election  />} />
+                    <Route path="/guardianManagement" element={<GuardianManagement />} />
+                    <Route path="/accountRecovery" element={<AccountRecovery />} />
+                    <Route path="/accountManagement" element={<AccountManagement  />} />
                 </Routes>
             </div>
         </Router>
