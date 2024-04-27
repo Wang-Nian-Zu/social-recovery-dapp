@@ -161,6 +161,51 @@ contract("SocialRecoveryWallet", (accounts) => {
     isGuardian = await socialRecoveryWalletInstance.getIsGuardianOrNot(accounts[1]);
     assert.equal(isGuardian,false, "Account1 should not be a guardian");
   });
+  it("should not allow recovery initiation if already in recovery process", async () => {
+    // guardian1 初始化 recovery
+    await socialRecoveryWalletInstance.initiateRecovery(newOwner, { from: guardian1 });
+    // 再次嘗試初始化 recovery，應該會拋出錯誤
+    try {
+      await socialRecoveryWalletInstance.initiateRecovery(newOwner, { from: guardian2 });
+      assert.fail("should not allow recovery initiation if already in recovery process");
+    } catch (error) {
+      assert(error.message.includes("Already in the recovery process"), "Unexpected error message");
+    }
+  });
+  it("should not allow recovery execution without sufficient support", async () => {
+    // guardian1 owner 初始化 recovery
+    await socialRecoveryWalletInstance.initiateRecovery(newOwner, { from: guardian1 });
+    // guardian2 表態支持 recovery，但 guardian3 不支持
+    await socialRecoveryWalletInstance.supportRecovery(newOwner, { from: guardian2 });
+    try {
+      await socialRecoveryWalletInstance.executeRecovery(newOwner, [guardian2, guardian3], {from: guardian2});
+      assert.fail("should not allow recovery execution without sufficient support");
+    } catch (error) {
+      assert(error.message.includes("Insufficient support"), "Unexpected error message");
+    }
+  });
+  it("should not allow recovery execution with wrong guardian address amount", async () => {
+    // guardian1 owner 初始化 recovery
+    await socialRecoveryWalletInstance.initiateRecovery(newOwner, { from: guardian1 });
+    // guardian2 和 guardian3 表態支持 recovery
+    await socialRecoveryWalletInstance.supportRecovery(newOwner, { from: guardian2 });
+    await socialRecoveryWalletInstance.supportRecovery(newOwner, { from: guardian3 });
+    try {
+      await socialRecoveryWalletInstance.executeRecovery(newOwner, [guardian2],{from: guardian2});
+      assert.fail("should not allow recovery execution with wrong guardian address");
+    } catch (error) {
+      assert(error.message.includes("Insufficient guardians"), "Unexpected error message");
+    }
+  });
+  it("should not allow recovery execution if not in recovery process", async () => {
+    // 嘗試在非恢復過程中執行 recovery，應該會拋出錯誤
+    try {
+      await socialRecoveryWalletInstance.executeRecovery(newOwner, [guardian2, guardian3],{from: guardian1});
+      assert.fail("should not allow recovery execution if not in recovery process");
+    } catch (error) {
+      assert(error.message.includes("Only during the recovery process"), "Unexpected error message");
+    }
+  });
 });
 
 

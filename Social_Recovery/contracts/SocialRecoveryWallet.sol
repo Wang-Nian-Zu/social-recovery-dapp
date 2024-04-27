@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 contract SocialRecoveryWallet{
     address public owner; //此 Wallet 的帳戶擁有者
+    uint totalDepositAmount;
     uint public threshold; //閾值，要多少 guardian 同意
     bool public isRecovering; // 現在是否是在“帳戶恢復”階段
     uint public currRecoveryRound; // 現在已經是第幾次的恢復
@@ -37,6 +38,8 @@ contract SocialRecoveryWallet{
     event GuardianSupportRecovery(address contractAddress, uint currentRecoveryRound, address guardianAddr, address newOwnerAddr);
     event RecoverySuccess(address contractAddress, address oldOwnerAddr, address newOwnerAddr);
     event RemoveGuardianSuccess(address contractAddress, address removeOldGuardian, address AddNewGuardian);
+    event DepositMoneySuccess(address contractAddress, uint totalether, uint deposit);
+    event WithdrawMoneySuccess(address contractAddress, uint totalether, uint withdraw);
 
     constructor(uint _threshold, address[] memory _initialGuardians) {
         owner = msg.sender; //部署合約者是初始 Wallet 的帳戶擁有者
@@ -48,11 +51,17 @@ contract SocialRecoveryWallet{
             isGuardian[guardian] = true;
         }
     }
-    function sendTransaction(address _to, uint _value, bytes memory _data) external onlyOwner{
-        // 這裡還需要先確認並不處在 Recovering 中
+    function depositMoney() external payable onlyOwner{
         require(!isRecovering, "Cannot send transaction during recovery process");
-        (bool success, ) = _to.call{value: _value}(_data);
-        require(success, "external call reverted");
+        totalDepositAmount += msg.value;
+        emit DepositMoneySuccess(address(this), totalDepositAmount, msg.value);
+    }
+    function withdrawMoney(uint withdrawValue) external payable onlyOwner{
+        require(!isRecovering, "Cannot send transaction during recovery process");
+        require(totalDepositAmount>=withdrawValue, "Cannot not withdraw more than total deposit amount");
+        totalDepositAmount -= withdrawValue;
+        payable(owner).transfer(withdrawValue);
+        emit WithdrawMoneySuccess(address(this), totalDepositAmount, withdrawValue);
     }
     function removeGuardian(address removingGuardian) external onlyOwner {
         // 將 Removal Period 設定為當前 timestamp + 1 Days
