@@ -14,7 +14,7 @@ const Mynavbar = () => {
     const [account, setAccount] = useState("");
     useEffect(()=>{
         async function load() {
-            const web3 = new Web3(Web3.givenProvider || 'http://localhost:7545');
+            const web3 = new Web3(Web3.givenProvider || 'http://172.0.0.1:7545');
             const accounts = await web3.eth.requestAccounts();
             setAccount(accounts[0]);       
         }  

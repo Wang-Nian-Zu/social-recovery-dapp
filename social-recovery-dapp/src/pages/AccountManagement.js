@@ -3,6 +3,8 @@ import { CONTACT_ABI, CONTACT_ADDRESS } from './abi/SocialRecoveryConfig.js';
 import { Form, Col, Modal, Button } from "react-bootstrap";
 import Web3 from 'web3';
 const AccountManagement = () => {
-    
+    return(
+        <></>
+    )
 }
 export default AccountManagement; 
