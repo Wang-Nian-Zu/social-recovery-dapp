@@ -206,6 +206,61 @@ contract("SocialRecoveryWallet", (accounts) => {
       assert(error.message.includes("Only during the recovery process"), "Unexpected error message");
     }
   });
+  it("should allow owner to deposit money", async () => {
+    const initialBalance = await socialRecoveryWalletInstance.getBalance();
+
+    const depositAmount = 1;
+    await socialRecoveryWalletInstance.depositMoney({ from: owner, value: depositAmount });
+
+    const finalBalance = await socialRecoveryWalletInstance.getBalance();
+
+    assert.equal(finalBalance - initialBalance,depositAmount,"Deposit amount is incorrect");
+  });
+  it("should allow owner to withdraw money", async () => {
+    const depositAmount = 2;
+    await socialRecoveryWalletInstance.depositMoney({ from: owner, value: depositAmount });
+    const initialBalance = await socialRecoveryWalletInstance.getBalance();
+    const withdrawAmount = 1;
+    await socialRecoveryWalletInstance.withdrawMoney(withdrawAmount, { from: owner });
+    const finalBalance = await socialRecoveryWalletInstance.getBalance();
+    assert.equal(
+       initialBalance-finalBalance,withdrawAmount,"Withdraw amount is incorrect"
+    );
+  });
+  it("should revert when non-owner tries to deposit money", async () => {
+    const depositAmount = 1;
+    const nonOwner = guardian1;
+    try {
+      await socialRecoveryWalletInstance.depositMoney({ from: nonOwner, value: depositAmount });
+      assert.fail("should revert when non-owner tries to deposit money");
+    } catch (error) {
+      assert(error.message.includes("Only owner can perform this action"), "Unexpected error message");
+    }
+  });
+  it("should revert when non-owner tries to withdraw money", async () => {
+    const depositAmount = 2;
+    await socialRecoveryWalletInstance.depositMoney({ from: owner, value: depositAmount });
+    const nonOwner = guardian1;
+    const withdrawAmount = 1;
+    try {
+      await socialRecoveryWalletInstance.withdrawMoney(withdrawAmount, { from: nonOwner});
+      assert.fail("should revert when non-owner tries to withdraw money");
+    } catch (error) {
+      assert(error.message.includes("Only owner can perform this action"), "Unexpected error message");
+    }
+  });
+  it("should revert when owner tries to withdraw more than the total deposit amount", async () => {
+    const depositAmount = 1;
+    await socialRecoveryWalletInstance.depositMoney({ from: owner, value: depositAmount });
+
+    const withdrawAmount = 2;
+    try {
+      await socialRecoveryWalletInstance.withdrawMoney(withdrawAmount, { from: owner });
+      assert.fail("should revert when owner tries to withdraw more than the total deposit amount");
+    } catch (error) {
+      assert(error.message.includes("Cannot not withdraw more than total deposit amount"), "Unexpected error message");
+    }
+  });
 });
 
 

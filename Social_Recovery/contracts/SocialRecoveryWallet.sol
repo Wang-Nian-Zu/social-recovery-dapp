@@ -63,6 +63,9 @@ contract SocialRecoveryWallet{
         payable(owner).transfer(withdrawValue);
         emit WithdrawMoneySuccess(address(this), totalDepositAmount, withdrawValue);
     }
+    function getBalance() external view onlyOwner returns(uint balance){
+        return(totalDepositAmount);
+    }
     function removeGuardian(address removingGuardian) external onlyOwner {
         // 將 Removal Period 設定為當前 timestamp + 1 Days
         uint256 currentTimestamp = block.timestamp;
