@@ -10,7 +10,7 @@ const AccountManagement = () => {
     const [accountBalances, setAccountBalances] = useState(0);
     const [isloading, setIsloading] = useState(false);
     const [contentVisiable, setContentVisiable] = useState(false);
-    const [data, setData] = useState({});
+    const [data, setData] = useState({deposit:0,withdraw:0});
     const [show, setShow] = useState(false);
     const [show2, setShow2] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -49,7 +49,7 @@ const AccountManagement = () => {
         setShow2(false);
         setIsError(false);
         setErrorMsg("");
-        setData({});
+        setData({deposit:0,withdraw:0});
     };
     const depositMoney = async(e) => {
         e.preventDefault();
@@ -123,8 +123,8 @@ const AccountManagement = () => {
              <div className="row">
                 {
                     isloading && (
-                        <div id="loader" class="text-center">
-                            <p class="text-center">Loading...</p>
+                        <div id="loader" className="text-center">
+                            <p className="text-center">Loading...</p>
                         </div>
                     )
                 }
