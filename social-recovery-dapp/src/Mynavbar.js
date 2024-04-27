@@ -33,8 +33,8 @@ const Mynavbar = () => {
                             navbarScroll
                         >
                             <Nav.Link as={Link} to={"/"}> 首頁 </Nav.Link>
-                            <Nav.Link as={Link} to={"/accountManagement"}> 存款/提款 </Nav.Link>
-                            <Nav.Link as={Link} to={"/guardianManagement"}> 監護人列表 </Nav.Link>
+                            <Nav.Link as={Link} to={"/accountManagement"}> 帳戶金額 </Nav.Link>
+                            <Nav.Link as={Link} to={"/guardianManagement"}> 監護人管理 </Nav.Link>
                             <Nav.Link as={Link} to={"/accountRecovery"}> 帳戶復原 </Nav.Link>
                         </Nav>
                         <Nav navbarScroll>
@@ -51,9 +51,9 @@ const Mynavbar = () => {
                 <ScrollToTop />
                 <Routes>
                     <Route path="/" element={<HomePage />} />
+                    <Route path="/accountManagement" element={<AccountManagement  />} />
                     <Route path="/guardianManagement" element={<GuardianManagement />} />
                     <Route path="/accountRecovery" element={<AccountRecovery />} />
-                    <Route path="/accountManagement" element={<AccountManagement  />} />
                 </Routes>
             </div>
         </Router>

@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 contract SocialRecoveryWallet{
     address public owner; //此 Wallet 的帳戶擁有者
-    uint totalDepositAmount;
+    uint public totalDepositAmount ;
     uint public threshold; //閾值，要多少 guardian 同意
     bool public isRecovering; // 現在是否是在“帳戶恢復”階段
     uint public currRecoveryRound; // 現在已經是第幾次的恢復
@@ -50,6 +50,7 @@ contract SocialRecoveryWallet{
             address guardian = _initialGuardians[i];
             isGuardian[guardian] = true;
         }
+        totalDepositAmount = 0;
     }
     function depositMoney() external payable onlyOwner{
         require(!isRecovering, "Cannot send transaction during recovery process");
@@ -63,7 +64,7 @@ contract SocialRecoveryWallet{
         payable(owner).transfer(withdrawValue);
         emit WithdrawMoneySuccess(address(this), totalDepositAmount, withdrawValue);
     }
-    function getBalance() external view onlyOwner returns(uint balance){
+    function getBalance() external view returns(uint balance){
         return(totalDepositAmount);
     }
     function removeGuardian(address removingGuardian) external onlyOwner {
