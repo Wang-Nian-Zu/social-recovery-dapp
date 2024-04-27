@@ -8,6 +8,7 @@ const AccountManagement = () => {
     const [contactList, setContactList] = useState();
     const [isloaded, setIsloaded] = useState(false);
     const [accountBalances, setAccountBalances] = useState(0);
+    const [isRecovering, setIsRecovering] = useState(false);
     const [isloading, setIsloading] = useState(false);
     const [contentVisiable, setContentVisiable] = useState(false);
     const [data, setData] = useState({deposit:0,withdraw:0});
@@ -28,8 +29,10 @@ const AccountManagement = () => {
             setContactList(contactList);
             const ownerResult = await contactList.methods.owner().call();
             const balanceResult = await contactList.methods.totalDepositAmount().call();
+            const isRecoveringResult = await contactList.methods.isRecovering().call();
             setOwner(ownerResult);
             setAccountBalances(balanceResult);
+            setIsRecovering(isRecoveringResult);
             setIsloaded(true);
             setContentVisiable(true);
         }
@@ -136,7 +139,7 @@ const AccountManagement = () => {
                             <br />
                             <p>帳戶擁有者地址: {owner} </p>
                             <p>帳戶總金額：{accountBalances} wei</p>
-                            {owner===account&&(
+                            {!isRecovering&&owner===account&&(
                                 <div>
                                 <Button size="md" className="btn btn-dark" onClick={handleClick}> 存錢 </Button>
                                 <Button size="md" className="btn btn-dark" onClick={handleClick2}> 領錢 </Button>
