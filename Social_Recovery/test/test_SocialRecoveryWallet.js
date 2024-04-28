@@ -106,6 +106,8 @@ contract("SocialRecoveryWallet", (accounts) => {
     // 假設要被移除的守護者
     let guardianToRemove = accounts[1];
     let guardianToAdd = accounts[4];
+    const guardiansBeforeAddition = await socialRecoveryWalletInstance.getAllGuardianList();
+    assert.equal(guardiansBeforeAddition.includes(guardianToRemove), true, "Removal guardian should be exist before removal");
     // 假設帳戶 0 是所有者，設定守護者移除排程
     await socialRecoveryWalletInstance.removeGuardian(guardianToRemove,{from: owner});
     // 驗證移除排程時間未過時無法執行守護者移除
@@ -113,6 +115,9 @@ contract("SocialRecoveryWallet", (accounts) => {
     await socialRecoveryWalletInstance.executeGuardianRemoval(guardianToRemove, guardianToAdd,{from: owner});
     const isGuardian = await socialRecoveryWalletInstance.getIsGuardianOrNot(guardianToRemove);
     assert.equal(isGuardian, false, "The guardian is not removed yet");
+    const guardiansAfterAddition = await socialRecoveryWalletInstance.getAllGuardianList();
+    assert.equal(guardiansAfterAddition.includes(guardianToAdd), true, "New guardian addition unsuccessful");
+    assert.equal(guardiansAfterAddition.includes(guardianToRemove), false, "Removal guardian delete unsuccessful");
   });
   it("should prevent guardian removal if removal period not passed", async () => {
     // 假設要被移除的守護者
