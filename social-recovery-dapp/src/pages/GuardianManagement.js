@@ -84,13 +84,15 @@ const GuardianManagement = () => {
         const contractListResult = new web3.eth.Contract(CONTACT_ABI, CONTACT_ADDRESS);
         const removaltime = await contractListResult.methods.getGuardianRemovalPeriod(guardian).call();
         var currTimestamp = Math.round(Date.now() / 1000);
+        console.log(removaltime)
         if (removaltime == 0){
             return 1;
         }else if(removaltime > currTimestamp){
             return 2;
-        }else{
+        }else if(removaltime < currTimestamp){
             return 3;
         }
+        return 0;
     }
     return(
         <div className="container" style={{ width: "650px" }}>
@@ -124,7 +126,7 @@ const GuardianManagement = () => {
                                 </thead>
                                 <tbody id="guardiansResults">
                                     {
-                                        (owner==account)&&(guardians.map((guardian, index) => {
+                                        (owner===account)&&(guardians.map((guardian, index) => {
                                             const status = statusArray[index];
                                             return(
                                             <tr key={`${guardian}-${index}`}>
@@ -134,21 +136,21 @@ const GuardianManagement = () => {
                                                     (status===1)?(<p style={{ color: 'green' }}>任期中</p>)
                                                     :(status===2)?(<p style={{ color: 'blue' }}>等待中</p>)
                                                     :(status===3)?(<p style={{ color: 'red' }}>可刪除</p>)  
-                                                    :<p>hi</p>
+                                                    :<p></p>
                                                 }</td>
                                                 <td>
                                                     {
                                                     (status===1)
-                                                    &&(<RemovalGuardianButton id={guardian} owner={owner} account={account} contractList={contractList}
+                                                    ?(<RemovalGuardianButton id={guardian} owner={owner} account={account} contractList={contractList}
                                                         isError={isError} setIsError={setIsError} errorMsg={errorMsg} setErrorMsg={setErrorMsg}
                                                         setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>)
-                                                    ||
+                                                    :
                                                     (status===2)
-                                                    &&(<CancelRemovalGuardianButton id={guardian} owner={owner} account={account} contractList={contractList}
+                                                    ?(<CancelRemovalGuardianButton id={guardian} owner={owner} account={account} contractList={contractList}
                                                     isError={isError} setIsError={setIsError} errorMsg={errorMsg} setErrorMsg={setErrorMsg}
                                                     setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>)
-                                                    ||
-                                                    (status===3)&&(
+                                                    :
+                                                    (status===3)?(
                                                     <div>
                                                         <ExecuteRemovalGuardianButton id={guardian} owner={owner} account={account} contractList={contractList}
                                                         isError={isError} setIsError={setIsError} errorMsg={errorMsg} setErrorMsg={setErrorMsg}
@@ -157,7 +159,7 @@ const GuardianManagement = () => {
                                                         isError={isError} setIsError={setIsError} errorMsg={errorMsg} setErrorMsg={setErrorMsg}
                                                         setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>
                                                     </div>
-                                                    )}
+                                                    ):(<p></p>)}
                                                 </td>
                                             </tr>
                                             )}))                                          

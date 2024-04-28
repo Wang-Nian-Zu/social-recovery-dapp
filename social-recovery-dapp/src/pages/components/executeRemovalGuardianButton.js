@@ -48,7 +48,7 @@ const ExecuteRemovalGuardianButton = (props) =>{
     }
     return(
         <div>
-            <Button variant="dark" onClick={handleClick}>加入刪除排程</Button>
+            <Button variant="danger" onClick={handleClick}>立即刪除</Button>
             <Modal
                 show={show}
                 size="lg"
@@ -76,6 +76,9 @@ const ExecuteRemovalGuardianButton = (props) =>{
                         onChange={handleChange} name="newGuardian" value={data.newGuardian}></Form.Control>
                     </Col>
                 </div>
+                <div className='row d-flex w-100'>
+                    <button type="submit" className="btn btn-dark">確定刪除</button>
+                </div>  
             </form>
             </Modal.Body>
             <Modal.Footer>

@@ -77,9 +77,10 @@ contract SocialRecoveryWallet{
         return(guardianRemovalPeriod[guardian]);
     }
     function removeGuardian(address removingGuardian) external onlyOwner {
-        // 將 Removal Period 設定為當前 timestamp + 1 Days
+        // 將 Removal Period 設定為當前 timestamp + 1 Days (86400)
+        // 測試用: 將 Removal Period 設定為當前 timestamp + 10 秒
         uint256 currentTimestamp = block.timestamp;
-        guardianRemovalPeriod[removingGuardian] = currentTimestamp + 86400;
+        guardianRemovalPeriod[removingGuardian] = currentTimestamp + 10;
     }
     function executeGuardianRemoval(address removingGuardian, address newGuardian) external onlyOwner {
         // 確認 oldGuardian 正在移除的排程中

@@ -2,9 +2,9 @@ const SocialRecoveryWallet = artifacts.require("SocialRecoveryWallet.sol");
 
 module.exports = async function(deployer) {
   const threshold = 2;
-  const initialGuardians = ["0x1528Bfaa915Bc3dda03d9F68Ae9b4346eAEa9319",
-                            "0x3224BbBcE55f59B640087aB77E43Ed63EfDf9db8",
-                            "0x89FDd9BaF1AA1a2746a3bA1edfFA5d575CBEe767"];
+  const initialGuardians = ["0xcCb65C19c5436dae911397c1F0B0a67cacD16Ee8",
+                            "0x930FE059FABF17cF3276B153db15eB044C5A8628",
+                            "0x077a2879Bd3631b87463Bd9Ad51f9638798d47cA"];
   await deployer.deploy(SocialRecoveryWallet, threshold, initialGuardians);
   
   const contractInstance = await SocialRecoveryWallet.deployed();
