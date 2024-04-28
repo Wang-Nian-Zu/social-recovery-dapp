@@ -1,5 +1,5 @@
 // use ctrl+ F to find "address": in Social_Recovery/build/contracts/SocialRecoveryWallet.json
-export const CONTACT_ADDRESS = "0x1fDc7bBbDDc88eE249c9d1E806087345c56DC4CF";
+export const CONTACT_ADDRESS = "0x6dEc11De0D25F9709dAbA85343fa5B6c52e5660B";
 
 // use  ctrl+ F to find "abi": in Social_Recovery/build/contracts/SocialRecoveryWallet.json
 export const CONTACT_ABI =  [
@@ -246,6 +246,26 @@ export const CONTACT_ABI =  [
     "constant": true
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "guardians",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
     "inputs": [],
     "name": "isRecovering",
     "outputs": [
@@ -331,6 +351,20 @@ export const CONTACT_ABI =  [
         "internalType": "uint256",
         "name": "balance",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "getAllGuardianList",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
       }
     ],
     "stateMutability": "view",
