@@ -126,7 +126,7 @@ const GuardianManagement = () => {
                                 </thead>
                                 <tbody id="guardiansResults">
                                     {
-                                        (owner===account)&&(guardians.map((guardian, index) => {
+                                        (owner===account)?(guardians.map((guardian, index) => {
                                             const status = statusArray[index];
                                             return(
                                             <tr key={`${guardian}-${index}`}>
@@ -162,7 +162,14 @@ const GuardianManagement = () => {
                                                     ):(<p></p>)}
                                                 </td>
                                             </tr>
-                                            )}))                                          
+                                            )})) :
+                                            (
+                                                <>
+                                                  <br/><hr/>
+                                                  <h3 styles={{color: "red"}}> 注意：只有帳戶擁有人有權限管理監護人 </h3>
+                                                </>
+                                                
+                                            )                                        
                                     }
                                 </tbody>
                             </Table>

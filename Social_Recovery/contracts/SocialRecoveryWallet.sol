@@ -210,6 +210,9 @@ contract SocialRecoveryWallet{
         isGuard = isGuardian[guardian];
         return(isGuard);
     }
+    function getGuardianSupportNewOwner(address guardian) external view returns(address newOwner){
+        return(guardianToRecovery[guardian].newOwnerAddr);
+    }
 }
 
 
