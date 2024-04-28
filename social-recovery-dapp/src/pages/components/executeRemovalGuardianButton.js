@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState} from 'react';
+import { Form, Col, Modal, Button } from "react-bootstrap";
 const ExecuteRemovalGuardianButton = (props) =>{
     const {id} = props;
     const {owner} = props;
@@ -24,7 +25,7 @@ const ExecuteRemovalGuardianButton = (props) =>{
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
     };
-    const executeGuardianRemoval = async() => {
+    const executeGuardianRemoval = async(e) => {
         e.preventDefault();
         const sendData = {
             newGuardian: data.newGuardian

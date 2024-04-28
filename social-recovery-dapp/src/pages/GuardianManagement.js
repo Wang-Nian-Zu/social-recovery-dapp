@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CONTACT_ABI, CONTACT_ADDRESS } from './abi/SocialRecoveryConfig.js';
-import { Form, Col, Modal, Button } from "react-bootstrap";
+import { Table, Form, Row, Col, Modal, Button } from "react-bootstrap";
 import Web3 from 'web3';
 import RemovalGuardianButton from './components/removalGuardianButton.js';
 import CancelRemovalGuardianButton from './components/cancelRemovalGuardianButton.js';
@@ -10,13 +10,12 @@ const GuardianManagement = () => {
     const [owner, setOwner] = useState("");
     const [guardians, setGuardians] = useState([]);
     const [isGuardian, setIsGuardian] = useState([]);
-    const [guardianRemovalPeriod, setGuardianRemovalPeriod] = useState([]);
-    const [currTimestamp, setCurrTimeStamp]=useState(0);
     const [contractList, setContractList] = useState();
     const [isloaded, setIsloaded] = useState(false);
     const [isloading, setIsloading] = useState(false);
     const [isRecovering, setIsRecovering] = useState(false);
     const [contentVisiable, setContentVisiable] = useState(false);
+    const [statusArray, setStatusArray] = useState([]);
     const [data, setData] = useState({deposit:0,withdraw:0});
     const [show, setShow] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -30,20 +29,18 @@ const GuardianManagement = () => {
             const accounts = await web3.eth.requestAccounts();
             setAccount(accounts[0]);
             // Instantiate smart contract using ABI and address.
-            const contractList = new web3.eth.Contract(CONTACT_ABI, CONTACT_ADDRESS);
-            setContractList(contractList);
+            const contractListResult = new web3.eth.Contract(CONTACT_ABI, CONTACT_ADDRESS);
+            setContractList(contractListResult);
             const ownerResult = await contractList.methods.owner().call();
-            const guardiansResult = await contractList.methods.guardians().call();
+            const guardiansResult = await contractList.methods.getAllGuardianList().call();
             const isGuardianResult = await contractList.methods.getIsGuardianOrNot(accounts[0]).call();
             const isRecoveringResult = await contractList.methods.isRecovering().call();
-            const guardianRemovalPeriodResult = await contractList.methods.guardianRemovalPeriod().call();
-            var timestamp = Math.round(Date.now() / 1000);
             setOwner(ownerResult);
             setGuardians(guardiansResult);
+            const statusArray = await Promise.all(guardiansResult.map(guardian => findGuardianInRemovalOrNot(guardian)));
+            setStatusArray(statusArray);
             setIsGuardian(isGuardianResult);
             setIsRecovering(isRecoveringResult);
-            setCurrTimeStamp(timestamp);
-            setGuardianRemovalPeriod(guardianRemovalPeriodResult);
             setIsloaded(true);
             setContentVisiable(true);
         }
@@ -52,20 +49,16 @@ const GuardianManagement = () => {
     const handleClick = (e) => {
         setShow(true);
     };
-    const handleClick2 = (e) => {
-        setShow2(true);
-    };
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
     };
     const handleClose = (e) => {
         setShow(false);
-        setShow2(false);
         setIsError(false);
         setErrorMsg("");
         setData({newGuardian:"",removingGuardian:""});
     };
-    const transferPermission = async() =>{
+    const transferPermission = async(e) =>{
         e.preventDefault();
         if(isRecovering){
             setIsError(true);
@@ -86,7 +79,17 @@ const GuardianManagement = () => {
                 window.location.reload();
             });
     }
-    
+    const findGuardianInRemovalOrNot = async(guardian) =>{
+        const removaltime = await contractList.methods.getGuardianRemovalPeriod(guardian).call();
+        var currTimestamp = Math.round(Date.now() / 1000);
+        if (removaltime == 0){
+            return 1;
+        }else if(removaltime > currTimestamp){
+            return 2;
+        }else{
+            return 3;
+        }
+    }
     return(
         <div className="container" style={{ width: "650px" }}>
              <div className="row">
@@ -119,28 +122,31 @@ const GuardianManagement = () => {
                                 </thead>
                                 <tbody id="guardiansResults">
                                     {
-                                        (owner==account)&&(Object.keys(guardians).map((guardian, index) => (
-                                            <tr key={`${tasks[index].name}-${index}`}>
+                                        (owner==account)&&(guardians.map((guardian, index) => {
+                                            const status = statusArray[index];
+                                            return(
+                                            <tr key={`${guardian}-${index}`}>
                                                 <td>{index}</td>
                                                 <td>{guardian}</td>
                                                 <td>{
-                                                    (guardianRemovalPeriod[guardian]===0)&&(<p style={{ color: 'green' }}>現任中</p>)
-                                                    (guardianRemovalPeriod[guardian]!==0)&&(guardianRemovalPeriod[guardian]<currTimestamp)&&(<p style={{ color: 'yellow' }}>等待刪除中</p>)
-                                                    (guardianRemovalPeriod[guardian]!==0)&&(guardianRemovalPeriod[guardian]>currTimestamp)&&(<p style={{ color: 'red' }}>可刪除</p>)   
+                                                    (status===1)?(<p style={{ color: 'green' }}>任期中</p>)
+                                                    :(status===2)?(<p style={{ color: 'yellow' }}>等待中</p>)
+                                                    :(status===3)?(<p style={{ color: 'red' }}>可刪除</p>)  
+                                                    :<p>hi</p>
                                                 }</td>
                                                 <td>
                                                     {
-                                                    (guardianRemovalPeriod[guardian]===0)
+                                                    (status===1)
                                                     &&(<RemovalGuardianButton id={guardian} owner={owner} account={account} contractList={contractList}
                                                         isError={isError} setIsError={setIsError} errorMsg={errorMsg} setErrorMsg={setErrorMsg}
                                                         setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>)
-                                                    
-                                                    (guardianRemovalPeriod[guardian]!==0)&&(guardianRemovalPeriod[guardian]<currTimestamp)
+                                                    ||
+                                                    (status===2)
                                                     &&(<CancelRemovalGuardianButton id={guardian} owner={owner} account={account} contractList={contractList}
                                                     isError={isError} setIsError={setIsError} errorMsg={errorMsg} setErrorMsg={setErrorMsg}
                                                     setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>)
-                                                    
-                                                    (guardianRemovalPeriod[guardian]!==0)&&(guardianRemovalPeriod[guardian]>currTimestamp)&&(
+                                                    ||
+                                                    (status===3)&&(
                                                     <div>
                                                         <ExecuteRemovalGuardianButton id={guardian} owner={owner} account={account} contractList={contractList}
                                                         isError={isError} setIsError={setIsError} errorMsg={errorMsg} setErrorMsg={setErrorMsg}
@@ -152,7 +158,7 @@ const GuardianManagement = () => {
                                                     )}
                                                 </td>
                                             </tr>
-                                        )))                                          
+                                            )}))                                          
                                     }
                                 </tbody>
                             </Table>

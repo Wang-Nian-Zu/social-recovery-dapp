@@ -7,6 +7,7 @@ contract SocialRecoveryWallet{
     uint public threshold; //閾值，要多少 guardian 同意
     bool public isRecovering; // 現在是否是在“帳戶恢復”階段
     uint public currRecoveryRound; // 現在已經是第幾次的恢復
+    address[] public guardians;
     /*
     如果此 guardian 已經被刪除，那 value 則為 false
     如果此 guardian 已經被加入，那 value 則為 true
@@ -21,7 +22,7 @@ contract SocialRecoveryWallet{
     mapping(address => bool) isGuardian; //紀錄哪些其他帳戶是此 Wallet 的監護人
     mapping(address => uint256) public guardianRemovalPeriod; // 紀錄每個監護人何時會被移除
     mapping(address => RecoverInfo) public guardianToRecovery; // 監護人所發出的“恢復”資訊
-    address[] public guardians;
+    
 
     modifier onlyOwner() { //檢查是不是 sender 是否等於 owner address (因為有權限只有 owner 能做)
         require(msg.sender == owner, "Only owner can perform this action");
@@ -71,6 +72,9 @@ contract SocialRecoveryWallet{
     }
     function getAllGuardianList() external view returns(address[] memory){
         return(guardians);
+    }
+    function getGuardianRemovalPeriod(address guardian) external view returns(uint){
+        return(guardianRemovalPeriod[guardian]);
     }
     function removeGuardian(address removingGuardian) external onlyOwner {
         // 將 Removal Period 設定為當前 timestamp + 1 Days

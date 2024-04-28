@@ -1,5 +1,5 @@
 // use ctrl+ F to find "address": in Social_Recovery/build/contracts/SocialRecoveryWallet.json
-export const CONTACT_ADDRESS = "0x6dEc11De0D25F9709dAbA85343fa5B6c52e5660B";
+export const CONTACT_ADDRESS = "0xe0fE97C2Cf83bA1624274813DFf7816036A3b519";
 
 // use  ctrl+ F to find "abi": in Social_Recovery/build/contracts/SocialRecoveryWallet.json
 export const CONTACT_ABI =  [
@@ -365,6 +365,26 @@ export const CONTACT_ABI =  [
         "internalType": "address[]",
         "name": "",
         "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "guardian",
+        "type": "address"
+      }
+    ],
+    "name": "getGuardianRemovalPeriod",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",

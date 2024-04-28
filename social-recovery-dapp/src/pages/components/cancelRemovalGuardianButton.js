@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState} from 'react';
+import { Col, Modal, Button } from "react-bootstrap";
 const CancelRemovalGuardianButton = (props) =>{
     const {id} = props;
     const {owner} = props;
@@ -19,7 +20,7 @@ const CancelRemovalGuardianButton = (props) =>{
         setIsError(false);
         setErrorMsg("");
     };
-    const cancelProcess = async() => {
+    const cancelProcess = async(e) => {
         e.preventDefault();
         if(owner !== account){
             setIsError(true);

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState} from 'react';
+import { Col, Modal, Button } from "react-bootstrap";
 const RemovalGuardianButton = (props) =>{
     const {id} = props;
     const {owner} = props;
@@ -19,7 +20,7 @@ const RemovalGuardianButton = (props) =>{
         setIsError(false);
         setErrorMsg("");
     };
-    const removeGuardian = async() => {
+    const removeGuardian = async(e) => {
         e.preventDefault();
         if(owner !== account){
             setIsError(true);
@@ -39,7 +40,7 @@ const RemovalGuardianButton = (props) =>{
     }
     return(
         <div>
-            <Button variant="dark" onClick={handleClick}>加入刪除排程</Button>
+            <Button variant="dark" onClick={handleClick}>刪除</Button>
             <Modal
                 show={show}
                 size="lg"
