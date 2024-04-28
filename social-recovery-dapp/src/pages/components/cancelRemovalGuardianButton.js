@@ -47,7 +47,7 @@ const CancelRemovalGuardianButton = (props) =>{
                 aria-labelledby="contained-modal-title-vcenter"
                 centered>
             <Modal.Header>
-                <Modal.Title> 取消監護人的刪除排程 </Modal.Title>
+                <Modal.Title> 從刪除排程中取消該監護人 </Modal.Title>
             </Modal.Header>
                 <Modal.Body>
                     <form onSubmit={cancelProcess}>

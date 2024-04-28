@@ -31,10 +31,10 @@ const GuardianManagement = () => {
             // Instantiate smart contract using ABI and address.
             const contractListResult = new web3.eth.Contract(CONTACT_ABI, CONTACT_ADDRESS);
             setContractList(contractListResult);
-            const ownerResult = await contractList.methods.owner().call();
-            const guardiansResult = await contractList.methods.getAllGuardianList().call();
-            const isGuardianResult = await contractList.methods.getIsGuardianOrNot(accounts[0]).call();
-            const isRecoveringResult = await contractList.methods.isRecovering().call();
+            const ownerResult = await contractListResult.methods.owner().call();
+            const guardiansResult = await contractListResult.methods.getAllGuardianList().call();
+            const isGuardianResult = await contractListResult.methods.getIsGuardianOrNot(accounts[0]).call();
+            const isRecoveringResult = await contractListResult.methods.isRecovering().call();
             setOwner(ownerResult);
             setGuardians(guardiansResult);
             const statusArray = await Promise.all(guardiansResult.map(guardian => findGuardianInRemovalOrNot(guardian)));
@@ -80,7 +80,9 @@ const GuardianManagement = () => {
             });
     }
     const findGuardianInRemovalOrNot = async(guardian) =>{
-        const removaltime = await contractList.methods.getGuardianRemovalPeriod(guardian).call();
+        const web3 = new Web3(Web3.givenProvider || 'http://172.0.0.1:7545');
+        const contractListResult = new web3.eth.Contract(CONTACT_ABI, CONTACT_ADDRESS);
+        const removaltime = await contractListResult.methods.getGuardianRemovalPeriod(guardian).call();
         var currTimestamp = Math.round(Date.now() / 1000);
         if (removaltime == 0){
             return 1;
@@ -130,7 +132,7 @@ const GuardianManagement = () => {
                                                 <td>{guardian}</td>
                                                 <td>{
                                                     (status===1)?(<p style={{ color: 'green' }}>任期中</p>)
-                                                    :(status===2)?(<p style={{ color: 'yellow' }}>等待中</p>)
+                                                    :(status===2)?(<p style={{ color: 'blue' }}>等待中</p>)
                                                     :(status===3)?(<p style={{ color: 'red' }}>可刪除</p>)  
                                                     :<p>hi</p>
                                                 }</td>

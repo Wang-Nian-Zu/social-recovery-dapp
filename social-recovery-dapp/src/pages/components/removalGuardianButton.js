@@ -47,7 +47,7 @@ const RemovalGuardianButton = (props) =>{
                 aria-labelledby="contained-modal-title-vcenter"
                 centered>
             <Modal.Header>
-                <Modal.Title> 新增監護人到刪除排程 </Modal.Title>
+                <Modal.Title> 加入此監護人到刪除排程中 </Modal.Title>
             </Modal.Header>
                 <Modal.Body>
                     <form onSubmit={removeGuardian}>
@@ -60,7 +60,7 @@ const RemovalGuardianButton = (props) =>{
                             </Col>
                         </div>
                         <div className='row d-flex w-100'>
-                            <button type="submit" className="btn btn-dark">確定取消</button>
+                            <button type="submit" className="btn btn-dark">確定刪除</button>
                         </div>   
                     </form>
                 </Modal.Body>
