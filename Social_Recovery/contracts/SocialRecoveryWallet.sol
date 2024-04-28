@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 contract SocialRecoveryWallet{
     address public owner; //此 Wallet 的帳戶擁有者
-    uint public totalDepositAmount ;
+    uint public totalDepositAmount ; //帳戶總金額（wei 單位）
     uint public threshold; //閾值，要多少 guardian 同意
     bool public isRecovering; // 現在是否是在“帳戶恢復”階段
     uint public currRecoveryRound; // 現在已經是第幾次的恢復
@@ -21,7 +21,8 @@ contract SocialRecoveryWallet{
     mapping(address => bool) isGuardian; //紀錄哪些其他帳戶是此 Wallet 的監護人
     mapping(address => uint256) public guardianRemovalPeriod; // 紀錄每個監護人何時會被移除
     mapping(address => RecoverInfo) public guardianToRecovery; // 監護人所發出的“恢復”資訊
-    
+    address[] public guardians;
+
     modifier onlyOwner() { //檢查是不是 sender 是否等於 owner address (因為有權限只有 owner 能做)
         require(msg.sender == owner, "Only owner can perform this action");
         _;
@@ -48,6 +49,7 @@ contract SocialRecoveryWallet{
         // 設置初始的 guardian
         for (uint i = 0; i < _initialGuardians.length; i++) {
             address guardian = _initialGuardians[i];
+            guardians.push(_initialGuardians[i]);
             isGuardian[guardian] = true;
         }
         totalDepositAmount = 0;
@@ -67,6 +69,9 @@ contract SocialRecoveryWallet{
     function getBalance() external view returns(uint balance){
         return(totalDepositAmount);
     }
+    function getAllGuardianList() external view returns(address[] memory){
+        return(guardians);
+    }
     function removeGuardian(address removingGuardian) external onlyOwner {
         // 將 Removal Period 設定為當前 timestamp + 1 Days
         uint256 currentTimestamp = block.timestamp;
@@ -85,6 +90,14 @@ contract SocialRecoveryWallet{
         // 設定 Guardian Data Structures
         isGuardian[removingGuardian] = false;
         isGuardian[newGuardian] = true;
+        for (uint256 i = 0; i < guardians.length; i++) {
+            if (guardians[i] == removingGuardian) {
+                // 將最後一個元素移到要移除的元素位置，然後縮減數組長度
+                guardians[i] = guardians[guardians.length - 1];
+                guardians.pop();
+            }
+        }
+        guardians.push(newGuardian);
         emit RemoveGuardianSuccess(address(this), removingGuardian, newGuardian);
     }
     function cancelGuardianRemoval(address removingGuardian) onlyOwner external {
@@ -99,6 +112,14 @@ contract SocialRecoveryWallet{
        // 設定 Guardian Data Structures
        isGuardian[newGuardian] = true;
        isGuardian[msg.sender] = false;
+       for (uint256 i = 0; i < guardians.length; i++) {
+            if (guardians[i] == msg.sender) {
+                // 將最後一個元素移到要移除的元素位置，然後縮減數組長度
+                guardians[i] = guardians[guardians.length - 1];
+                guardians.pop();
+            }
+        }
+        guardians.push(newGuardian);
     }
     // Guardian 發起一輪新的 Recovery
     function initiateRecovery(address _newOwnerAddr) onlyGuardian external {

@@ -5,10 +5,10 @@ import Web3 from 'web3';
 const AccountManagement = () => {
     const [account, setAccount] = useState("");
     const [owner, setOwner] = useState("");
-    const [contactList, setContactList] = useState();
-    const [isloaded, setIsloaded] = useState(false);
+    const [contractList, setContractList] = useState();
     const [accountBalances, setAccountBalances] = useState(0);
     const [isRecovering, setIsRecovering] = useState(false);
+    const [isloaded, setIsloaded] = useState(false);
     const [isloading, setIsloading] = useState(false);
     const [contentVisiable, setContentVisiable] = useState(false);
     const [data, setData] = useState({deposit:0,withdraw:0});
@@ -25,11 +25,11 @@ const AccountManagement = () => {
             const accounts = await web3.eth.requestAccounts();
             setAccount(accounts[0]);
             // Instantiate smart contract using ABI and address.
-            const contactList = new web3.eth.Contract(CONTACT_ABI, CONTACT_ADDRESS);
-            setContactList(contactList);
-            const ownerResult = await contactList.methods.owner().call();
-            const balanceResult = await contactList.methods.totalDepositAmount().call();
-            const isRecoveringResult = await contactList.methods.isRecovering().call();
+            const contractList = new web3.eth.Contract(CONTACT_ABI, CONTACT_ADDRESS);
+            setContractList(contractList);
+            const ownerResult = await contractList.methods.owner().call();
+            const balanceResult = await contractList.methods.totalDepositAmount().call();
+            const isRecoveringResult = await contractList.methods.isRecovering().call();
             setOwner(ownerResult);
             setAccountBalances(balanceResult);
             setIsRecovering(isRecoveringResult);
@@ -80,7 +80,7 @@ const AccountManagement = () => {
         };
         setIsloading(true);
         setContentVisiable(false);
-        contactList.methods.depositMoney().send({ from: account, value: sendData.deposit})
+        contractList.methods.depositMoney().send({ from: account, value: sendData.deposit})
             .then(function (receipt) {
                 window.location.reload();
             })
@@ -112,7 +112,7 @@ const AccountManagement = () => {
         };
         setIsloading(true);
         setContentVisiable(false);
-        contactList.methods.withdrawMoney(sendData.withdraw).send({from: account})
+        contractList.methods.withdrawMoney(sendData.withdraw).send({from: account})
             .then(function (receipt) {
                 window.location.reload();
             })
