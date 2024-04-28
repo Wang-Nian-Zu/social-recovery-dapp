@@ -1,5 +1,5 @@
 // use ctrl+ F to find "address": in Social_Recovery/build/contracts/SocialRecoveryWallet.json
-export const CONTACT_ADDRESS = "0x7332f883b7F0EDE02Db5ccE9cdA15BcA02bd3795";
+export const CONTACT_ADDRESS = "0x141520cCb126Bdd089E9483F80990b7bcfafB254";
 
 // use  ctrl+ F to find "abi": in Social_Recovery/build/contracts/SocialRecoveryWallet.json
 export const CONTACT_ABI =  [
@@ -513,6 +513,26 @@ export const CONTACT_ABI =  [
         "internalType": "bool",
         "name": "isGuard",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "guardian",
+        "type": "address"
+      }
+    ],
+    "name": "getGuardianSupportNewOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
       }
     ],
     "stateMutability": "view",

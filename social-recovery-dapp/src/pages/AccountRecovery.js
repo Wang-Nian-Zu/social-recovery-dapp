@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CONTACT_ABI, CONTACT_ADDRESS } from './abi/SocialRecoveryConfig.js';
-import { Table, Col, Button } from "react-bootstrap";
+import { Row, Table, Col } from "react-bootstrap";
 import Web3 from 'web3';
 import InitialRecoveryButton from './components/InitialRecoveryButton.js';
 import SupportRecoveryButton from './components/SupportRecoveryButton.js';
@@ -27,7 +27,7 @@ const AccountRecovery = () => {
             const accounts = await web3.eth.requestAccounts();
             setAccount(accounts[0]);
             // Instantiate smart contract using ABI and address.
-            const contractList = new web3.eth.Contract(CONTACT_ABI, CONTACT_ADDRESS);
+            const contractListResult = new web3.eth.Contract(CONTACT_ABI, CONTACT_ADDRESS);
             setContractList(contractList);
             const ownerResult = await contractListResult.methods.owner().call();
             const guardiansResult = await contractListResult.methods.getAllGuardianList().call();
@@ -49,7 +49,7 @@ const AccountRecovery = () => {
     const findGuardianSupportNewOwner = async(guardian) =>{
         const web3 = new Web3(Web3.givenProvider || 'http://172.0.0.1:7545');
         const contractListResult = new web3.eth.Contract(CONTACT_ABI, CONTACT_ADDRESS);
-        const result = await contractListResult.methods.getGuardianSupportNewOwner(guardian).call();
+        let result = await contractListResult.methods.getGuardianSupportNewOwner(guardian).call();
         if (result === "0x0000000000000000000000000000000000000000"){
             result = "None";
         }
@@ -69,28 +69,31 @@ const AccountRecovery = () => {
                     contentVisiable && (
                         <div id="content" >
                             <h2 className="text-center" > 帳戶恢復 </h2>
-                            <h4>此帳戶第 {currRecoveryRound} 次恢復流程</h4>
-                            <h5> 帳戶狀態 : {(isRecovering)
-                            ?(<p styles={{color:"red"}}>恢復中</p>)
-                            :(<p styles={{color:"green"}}>正常</p>)}</h5>
+                            <Row>此帳戶第 {currRecoveryRound} 次恢復流程</Row>
+                            <Row> 帳戶狀態 : {(isRecovering)
+                            ?(<Col styles={{Color:"red"}}>恢復中</Col>)
+                            :(<Col styles={{Color:"green"}}>正常</Col>)}</Row>
                             <Row>
                                 {
                                     (!isRecovering && isGuardian)?
-                                    (<InitialRecoveryButton id={guardian} owner={owner} account={account} contractList={contractList}
+                                    (<InitialRecoveryButton owner={owner} account={account} contractList={contractList}
                                         setIsloading={setIsloading} setContentVisiable={setContentVisiable} />)
                                     :(isRecovering && isGuardian)?
                                     (
-                                        <>
-                                       <SupportRecoveryButton id={guardian} owner={owner} account={account} contractList={contractList}
+                                        <div>
+                                       <SupportRecoveryButton owner={owner} account={account} contractList={contractList}
                                         setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>
-                                       <ExecuteRecoveryButton id={guardian} owner={owner} account={account} contractList={contractList}
+                                       <ExecuteRecoveryButton owner={owner} account={account} contractList={contractList}
                                         setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>
-                                        </>
-                                    ):(<Col></Col>)
-                                    (isRecovering && owner===account)&&(<CancelRecoveryButton id={guardian} owner={owner} account={account} 
-                                        contractList={contractList} currRecoveryRound={currRecoveryRound}
-                                        setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>)
+                                        </div>
+                                    ):(<></>)
                                 }
+                                {
+                                    (isRecovering && owner===account) ?(<CancelRecoveryButton owner={owner} account={account} 
+                                        contractList={contractList} currRecoveryRound={currRecoveryRound}
+                                        setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>
+                                    ):(<></>)
+                                }   
                             </Row>
                             <Table striped bordered hover>
                                 <thead>
