@@ -211,7 +211,10 @@ contract SocialRecoveryWallet{
         return(isGuard);
     }
     function getGuardianSupportNewOwner(address guardian) external view returns(address newOwner){
-        return(guardianToRecovery[guardian].newOwnerAddr);
+        if(guardianToRecovery[guardian].recoveryRound == currRecoveryRound){
+            return(guardianToRecovery[guardian].newOwnerAddr);
+        }
+        return(address(0));
     }
 }
 

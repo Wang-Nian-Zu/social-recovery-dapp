@@ -45,7 +45,7 @@ const GuardianManagement = () => {
             setContentVisiable(true);
         }
         load();
-    },[])
+    },[isloaded])
     const handleClick = (e) => {
         setShow(true);
     };
@@ -85,7 +85,7 @@ const GuardianManagement = () => {
         const removaltime = await contractListResult.methods.getGuardianRemovalPeriod(guardian).call();
         var currTimestamp = Math.round(Date.now() / 1000);
         console.log(removaltime)
-        if (removaltime == 0){
+        if (removaltime === "0"){
             return 1;
         }else if(removaltime > currTimestamp){
             return 2;

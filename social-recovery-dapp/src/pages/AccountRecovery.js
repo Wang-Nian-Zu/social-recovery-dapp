@@ -28,7 +28,7 @@ const AccountRecovery = () => {
             setAccount(accounts[0]);
             // Instantiate smart contract using ABI and address.
             const contractListResult = new web3.eth.Contract(CONTACT_ABI, CONTACT_ADDRESS);
-            setContractList(contractList);
+            setContractList(contractListResult);
             const ownerResult = await contractListResult.methods.owner().call();
             const guardiansResult = await contractListResult.methods.getAllGuardianList().call();
             const isGuardianResult = await contractListResult.methods.getIsGuardianOrNot(accounts[0]).call();
@@ -73,19 +73,19 @@ const AccountRecovery = () => {
                             <Row> 帳戶狀態 : {(isRecovering)
                             ?(<Col styles={{Color:"red"}}>恢復中</Col>)
                             :(<Col styles={{Color:"green"}}>正常</Col>)}</Row>
-                            <Row>
+                            <Row styles={{justifyContent:'space-between'}}>
                                 {
                                     (!isRecovering && isGuardian)?
                                     (<InitialRecoveryButton owner={owner} account={account} contractList={contractList}
                                         setIsloading={setIsloading} setContentVisiable={setContentVisiable} />)
                                     :(isRecovering && isGuardian)?
                                     (
-                                        <div>
+                                        <>
                                        <SupportRecoveryButton owner={owner} account={account} contractList={contractList}
                                         setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>
                                        <ExecuteRecoveryButton owner={owner} account={account} contractList={contractList}
-                                        setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>
-                                        </div>
+                                        guardians={guardians} setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>
+                                        </>
                                     ):(<></>)
                                 }
                                 {

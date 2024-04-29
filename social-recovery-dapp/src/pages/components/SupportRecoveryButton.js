@@ -24,12 +24,12 @@ const SupportRecoveryButton = (props) =>{
     };
     const supportRecovery = async(e) => {
         e.preventDefault();
-        if(owner !== data.newOwner){
+        if(owner === data.newOwner){
             setIsError(true);
             setErrorMsg("錯誤：新帳戶擁有人不能與現在的帳戶擁有人相同");
             return;
         }
-        if(data.newOwner !== ""){
+        if(data.newOwner === ""){
             setIsError(true);
             setErrorMsg("錯誤：新帳戶擁有人不能為空");
             return;

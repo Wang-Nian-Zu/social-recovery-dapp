@@ -1,8 +1,10 @@
 import React, { useState} from 'react';
 import { Form, Col, Modal, Button } from "react-bootstrap";
+import Web3 from 'web3';
 const ExecuteRecoveryButton = (props) =>{
     const {owner} = props;
     const {account} = props;
+    const {guardians} = props;
     const {contractList} = props;
     const {setIsloading} = props;
     const {setContentVisiable} = props;
@@ -24,22 +26,38 @@ const ExecuteRecoveryButton = (props) =>{
     };
     const executeRecovery = async(e) => {
         e.preventDefault();
-        if(owner !== data.newOwner){
+        const web3 = new Web3(Web3.givenProvider || 'http://172.0.0.1:7545');
+        if(owner === data.newOwner){
             setIsError(true);
             setErrorMsg("錯誤：新帳戶擁有人不能與現在的帳戶擁有人相同");
             return;
         }
-        if(data.newOwner !== ""){
+        if(data.newOwner === ""){
             setIsError(true);
             setErrorMsg("錯誤：新帳戶擁有人不能為空");
             return;
         }
-        const sendData = {
-            newOwner:data.newOwner
+        var guardianList = [];
+        for (let i = 0; i < guardians.length; i++) {
+            var guardian = data[`${i}`];
+            if (typeof guardian !== 'undefined') {
+                if(web3.utils.isAddress(guardian)){
+                    guardianList.push(guardian);
+                }else{
+                    setIsError(true);
+                    setErrorMsg("錯誤:第"+`${i+1}`+"個監護人地址非 web3 地址格式");
+                    return;
+                }
+            }
         }
+        const sendData = {
+            newOwner:data.newOwner,
+            guardianList: guardianList
+        }
+        console.log(sendData.guardianList);
         setIsloading(true);
         setContentVisiable(false);
-        contractList.methods.executeRecovery(sendData.newOwner).send({from: account})
+        contractList.methods.executeRecovery(sendData.newOwner, sendData.guardianList).send({from: account})
             .then(function (receipt) {
                 window.location.reload();
             })
@@ -69,13 +87,22 @@ const ExecuteRecoveryButton = (props) =>{
                                 <Form.Control className="form-control mb-3" placeholder={`Add new owner address...`} type="text"
                                  onChange={handleChange} name="newOwner" value={data.newOwner}></Form.Control>
                             </Col>
-                            <Col sm={4}>
-                                <h5><span styles={{ color: '#d78559' }}>| </span> 所有監護人地址 </h5>
-                            </Col>
-                            <Col>
-                                <Form.Control className="form-control mb-3" placeholder={`Add guardian address...`} type="text"
-                                 onChange={handleChange} name="guardian" value={data.guardian}></Form.Control>
-                            </Col>
+                            {
+                                guardians.map((guardian, index) => {
+                                    return(
+                                    <div key={`${guardian}-${index}`}>
+                                        <Col sm={4}>
+                                           <h5><span styles={{ color: '#d78559' }}>| </span> 監護人地址{index+1} </h5>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control className="form-control mb-3" placeholder={`Add guardian address...`} type="text"
+                                            onChange={handleChange} name={`${index}`} value={data[`${index}`]}></Form.Control>
+                                        </Col>
+                                    </div>
+                                    )
+                                })
+                            }
+                            
                         </div>
                         <div className='row d-flex w-100'>
                             <button type="submit" className="btn btn-dark">確定</button>
