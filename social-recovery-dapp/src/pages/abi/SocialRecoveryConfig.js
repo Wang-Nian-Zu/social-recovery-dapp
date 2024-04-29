@@ -1,5 +1,5 @@
 // use ctrl+ F to find "address": in Social_Recovery/build/contracts/SocialRecoveryWallet.json
-export const CONTACT_ADDRESS = "0xAF44c26eac3fb39DC684Bd3850159612f861E393";
+export const CONTACT_ADDRESS = "0xfDC31CaaF71295A0C9620b02Cb26466e9C7610E8";
 
 // use  ctrl+ F to find "abi": in Social_Recovery/build/contracts/SocialRecoveryWallet.json
 export const CONTACT_ABI =  [
@@ -540,4 +540,3 @@ export const CONTACT_ABI =  [
     "constant": true
   }
 ];
-  

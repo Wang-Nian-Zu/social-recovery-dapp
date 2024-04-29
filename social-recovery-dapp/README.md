@@ -29,7 +29,13 @@ npm install @truffle/hdwallet-provider
 social-recovery-dapp/social-recovery-dapp/contract
 ```
 
-## 部署 SocialRecoveryWallet.sol 智能合約到 本地 Ganache上
+## 先設定初始社交認證的複數帳戶
+- 修改 `social-recovery-dapp/social-recovery-dapp/contract/migrations/1_deploy_contracts` 的 `threshold` 以及 `initialGuardians`
+- `threshold` : 資料型態，整數，設定要多少監護人支持才可以更改合約擁有人
+- `initialGuardians` : 資料型態，陣列，設定初始監護人有哪些，傳入他們的地址
+   - 可以使用預設的，預設`threshold`=2，`initialGuardians`將從 testnet 中的前三個帳戶地址作為初始化的監護人們
+
+## 部署 SocialRecoveryWallet.sol 智能合約到本地 Ganache 上
 ```bash
 truffle migrate --network development
 ```
