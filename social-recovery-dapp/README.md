@@ -14,13 +14,6 @@ npm install -g truffle@5.11.2
 - 確保啟用 Ganache 
 - 如果是 MacOs 就開啟 Ganache Application, 選擇 QuickStart
 
-## 安裝 @truffle/hdwallet-provider
-- HD Wallet-enabled Web3 provider. Use it to sign transactions for addresses derived from a 12 or 24 word mnemonic.
-
-```bash
-npm install @truffle/hdwallet-provider
-```
-
 ## 確認 contracts/truffle-config.js 正確設置，以便能連線 Testnet
 - Ganache 的預設是 host: "127.0.0.1" port: 7545
 
@@ -40,11 +33,6 @@ social-recovery-dapp/social-recovery-dapp/contract
 truffle migrate --network development
 ```
 
-## Deploy on the ropsten network
-```bash
-truffle migrate --network ropsten
-```
-
 ## 測試智能合約
 ```bash
 truffle test
@@ -60,9 +48,9 @@ cd social-recovery-dapp/social-recovery-dapp/
 npm install
 ```
 
-## 啟動 dapp
+## 在 localhost:3000 啟動 dapp
 ```bash
 npm start
 ```
-
-
+## 因為 Ropsten 測試網路在 2022 年宣布棄用，因此這邊就沒有實作上鏈至 Ropsten 測試網路
+- https://news.cnyes.com/news/id/4898763
