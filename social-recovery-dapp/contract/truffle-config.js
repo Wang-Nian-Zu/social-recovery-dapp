@@ -1,5 +1,5 @@
 const { projectId, mnemonic } = require('./secrets.json');
-//const HDWalletProvider = require('@truffle/hdwallet-provider');
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 module.exports = {
   networks: {
@@ -10,13 +10,11 @@ module.exports = {
     },
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
-    /*
     ropsten: {
       provider: () => new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/${projectId}`),
       network_id: 3,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
     },
-    */
   },
   compilers: {
     solc: {
