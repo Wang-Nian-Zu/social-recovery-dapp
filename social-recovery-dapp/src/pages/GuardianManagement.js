@@ -16,7 +16,7 @@ const GuardianManagement = () => {
     const [isRecovering, setIsRecovering] = useState(false);
     const [contentVisiable, setContentVisiable] = useState(false);
     const [statusArray, setStatusArray] = useState([]);
-    const [data, setData] = useState({deposit:0,withdraw:0});
+    const [data, setData] = useState({newGuardian:"",removingGuardian:""});
     const [show, setShow] = useState(false);
     const [isError, setIsError] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");

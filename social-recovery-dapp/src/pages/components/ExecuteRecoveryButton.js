@@ -10,7 +10,7 @@ const ExecuteRecoveryButton = (props) =>{
     const {setContentVisiable} = props;
     const [isError, setIsError] = useState(false);
     const [errorMsg, setErrorMsg]= useState("");
-    const [data, setData]= useState([])
+    const [data, setData]= useState({newOwner:""});
     const [show, setShow] = useState(false);
     const handleClick = (e) => {
         setShow(true);
