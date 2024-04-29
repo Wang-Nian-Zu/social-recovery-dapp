@@ -72,8 +72,9 @@ const AccountRecovery = () => {
                             <Row>此帳戶第 {currRecoveryRound} 次恢復流程</Row>
                             <Row> 帳戶狀態 : {(isRecovering)
                             ?(<Col styles={{Color:"red"}}>恢復中</Col>)
-                            :(<Col styles={{Color:"green"}}>正常</Col>)}</Row>
-                            <Row styles={{justifyContent:'space-between'}}>
+                            :(<Col styles={{Color:"green"}}>正常</Col>)}
+                            </Row>
+                            <Row xs="auto">
                                 {
                                     (!isRecovering && isGuardian)?
                                     (<InitialRecoveryButton owner={owner} account={account} contractList={contractList}

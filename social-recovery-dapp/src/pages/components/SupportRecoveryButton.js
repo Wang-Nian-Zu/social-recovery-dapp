@@ -50,7 +50,7 @@ const SupportRecoveryButton = (props) =>{
     }
     return(
         <Col>
-            <Button size="md" className="btn btn-warning" onClick={handleClick}> 覆議 </Button>
+            <Button size="md" className="btn btn-warning" onClick={handleClick}> 覆議恢復請求 </Button>
             <Modal
                 show={show}
                 size="lg"

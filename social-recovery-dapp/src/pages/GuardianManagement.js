@@ -126,7 +126,7 @@ const GuardianManagement = () => {
                                 </thead>
                                 <tbody id="guardiansResults">
                                     {
-                                        (owner===account)?(guardians.map((guardian, index) => {
+                                        (owner===account)&&(guardians.map((guardian, index) => {
                                             const status = statusArray[index];
                                             return(
                                             <tr key={`${guardian}-${index}`}>
@@ -151,29 +151,30 @@ const GuardianManagement = () => {
                                                     setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>)
                                                     :
                                                     (status===3)?(
-                                                    <div>
+                                                    <>
                                                         <ExecuteRemovalGuardianButton id={guardian} owner={owner} account={account} contractList={contractList}
                                                         isError={isError} setIsError={setIsError} errorMsg={errorMsg} setErrorMsg={setErrorMsg}
                                                         setIsloading={setIsloading} setContentVisiable={setContentVisiable} data={data} setData={setData}/>
                                                         <CancelRemovalGuardianButton id={guardian} owner={owner} account={account} contractList={contractList}
                                                         isError={isError} setIsError={setIsError} errorMsg={errorMsg} setErrorMsg={setErrorMsg}
                                                         setIsloading={setIsloading} setContentVisiable={setContentVisiable}/>
-                                                    </div>
+                                                    </>
                                                     ):(<p></p>)}
                                                 </td>
                                             </tr>
-                                            )})) :
-                                            (
-                                                <>
-                                                  <br/><hr/>
-                                                  <h3 styles={{color: "red"}}> 注意：只有帳戶擁有人有權限管理監護人 </h3>
-                                                </>
-                                                
-                                            )                                        
+                                            )}))                                     
                                     }
                                 </tbody>
+                                
                             </Table>
-
+                            {
+                                (owner!==account)&&(
+                                    <div>
+                                        <br/><hr/>
+                                        <h5 style={{ color: 'red' }}> 注意：只有帳戶擁有人有權限管理監護人 </h5>
+                                    </div>
+                                )
+                            }
                             <Modal
                                 show={show}
                                 size="lg"

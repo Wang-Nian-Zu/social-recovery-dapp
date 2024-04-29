@@ -40,12 +40,12 @@ const ExecuteRecoveryButton = (props) =>{
         var guardianList = [];
         for (let i = 0; i < guardians.length; i++) {
             var guardian = data[`${i}`];
-            if (typeof guardian !== 'undefined') {
+            if ((guardian !== "")&&(typeof guardian !== undefined)) {
                 if(web3.utils.isAddress(guardian)){
                     guardianList.push(guardian);
                 }else{
                     setIsError(true);
-                    setErrorMsg("錯誤:第"+`${i+1}`+"個監護人地址非 web3 地址格式");
+                    setErrorMsg(`錯誤:第${i+1}個監護人地址非 web3 地址格式`);
                     return;
                 }
             }
