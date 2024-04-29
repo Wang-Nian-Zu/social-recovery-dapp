@@ -40,7 +40,7 @@ const ExecuteRecoveryButton = (props) =>{
         var guardianList = [];
         for (let i = 0; i < guardians.length; i++) {
             var guardian = data[`${i}`];
-            if ((guardian !== "")&&(typeof guardian !== undefined)) {
+            if (guardian !== "") {
                 if(web3.utils.isAddress(guardian)){
                     guardianList.push(guardian);
                 }else{
