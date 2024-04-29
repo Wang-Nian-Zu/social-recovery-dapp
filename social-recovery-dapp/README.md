@@ -14,6 +14,9 @@ npm install -g truffle@5.11.2
 - 確保啟用 Ganache 
 - 如果是 MacOs 就開啟 Ganache Application, 選擇 QuickStart
 
+## 以下連結安裝 MetaMask Chrome Plugin
+- https://chromewebstore.google.com/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn
+
 ## 確認 contracts/truffle-config.js 正確設置，以便能連線 Testnet
 - Ganache 的預設是 host: "127.0.0.1" port: 7545
 
