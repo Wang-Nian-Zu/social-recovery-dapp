@@ -69,7 +69,7 @@ const AccountManagement = () => {
                 setErrorMsg("錯誤：存入金額已經超過現有 EOA 錢包擁有的金額！！");
                 return;
             }
-            if(data.deposit==0){
+            if((data.deposit==="0")||(data.deposit===0)){
                 setIsError(true);
                 setErrorMsg("錯誤：存入金額不能為0！！");
                 return;
@@ -101,7 +101,7 @@ const AccountManagement = () => {
                 setErrorMsg("錯誤：領出金額已經超過 Social Recovery Wallet 裡頭的總金額！！");
                 return;
             }
-            if(data.withdraw==0){
+            if((data.withdraw==="0")||(data.withdraw===0)){
                 setIsError(true);
                 setErrorMsg("錯誤：領出金額不能為0！！");
                 return;
