@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# secret
+/contract/secrets.json
+
 # testing
 /coverage
 

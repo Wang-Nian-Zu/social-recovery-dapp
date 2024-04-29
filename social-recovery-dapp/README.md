@@ -1,75 +1,62 @@
-# Getting Started with Create React App
+# Development Environment
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- **Operating System:** MacOS Ventura v13.5.1
+- **Node.js Version:** v18.17.1
 
-npm install create-react-app
-npm config set prefix /usr/local
-sudo npm install -g create-react-app
-create-react-app social-recovery-wallet
+## Installing Truffle
 
-## Available Scripts
+```bash
+npm install -g truffle@5.11.2
+```
 
-In the project directory, you can run:
+## 安裝 Ganache GUI / Ganache CLI
+- 官方網址：https://archive.trufflesuite.com/ganache/
+- 確保啟用 Ganache 
+- 如果是 MacOs 就開啟 Ganache Application, 選擇 QuickStart
 
-### `npm start`
+## 安裝 @truffle/hdwallet-provider
+- HD Wallet-enabled Web3 provider. Use it to sign transactions for addresses derived from a 12 or 24 word mnemonic.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+npm install @truffle/hdwallet-provider
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 確認 contracts/truffle-config.js 正確設置，以便能連線 Testnet
+- Ganache 的預設是 host: "127.0.0.1" port: 7545
 
-### `npm test`
+## 確認 console 是導向正確的路徑
+```bash
+social-recovery-dapp/social-recovery-dapp/contract
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 部署 SocialRecoveryWallet.sol 智能合約到 本地 Ganache上
+```bash
+truffle migrate --network development
+```
 
-### `npm run build`
+## Deploy on the ropsten network
+```bash
+truffle migrate --network ropsten
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 測試智能合約
+```bash
+truffle test
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 確認 console 是導向正確的路徑
+```bash
+cd social-recovery-dapp/social-recovery-dapp/
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 安裝 package.json 的所有依賴項
+```bash
+npm install
+```
 
-### `npm run eject`
+## 啟動 dapp
+```bash
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
