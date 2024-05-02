@@ -114,6 +114,8 @@ contract SocialRecoveryWallet{
        require(!isRecovering, "Cannot transfer guardian during recovery process");
        // 確認 msg.sender（被轉移的 Guardian） 並非處在 Removal Period
        require(guardianRemovalPeriod[msg.sender] == 0, "Guardian is in removal period");
+       // 確認 new Guardian 是否已經加入過 Guardian 了
+       require(isGuardian[newGuardian] == false, "New guardian was already been guardian before");
        // 設定 Guardian Data Structures
        isGuardian[newGuardian] = true;
        isGuardian[msg.sender] = false;
