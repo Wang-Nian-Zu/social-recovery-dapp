@@ -31,15 +31,37 @@ social-recovery-dapp/social-recovery-dapp/contract
 - `initialGuardians` : 資料型態，陣列，設定初始監護人有哪些，傳入他們的地址
    - 可以使用預設的，預設`threshold`=2，`initialGuardians`將從 testnet 中的前三個帳戶地址作為初始化的監護人們
 
+## 測試智能合約
+```bash
+truffle test
+```
+
 ## 部署 SocialRecoveryWallet.sol 智能合約到本地 Ganache 上
 ```bash
 truffle migrate --network development
 ```
 
-## 測試智能合約
-```bash
-truffle test
+## 合約部署完成後，必須將「合約地址」與「合約的 ABI」傳遞給 React.js
+- 找到 `social-recovery-dapp/contract/build/contracts/SocialRecoveryWallet.json` 後，需要將其中兩個值複製到 `social-recovery-dapp/src/pages/abi/SocialRecoveryConfig.js`中
+- 首先是「合約地址」，到`social-recovery-dapp/contract/build/contracts/SocialRecoveryWallet.json` 中使用 Ctrl+F 查找 `"address":` 就可以複製該 address 的值，例如以下就複製`"0xDE116b7427AE7d11175BBe0ADf16c7B476A01475"`
 ```
+   ...
+   "networks": {
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0xDE116b7427AE7d11175BBe0ADf16c7B476A01475",
+      "transactionHash": "0x0fd2ae2487ed05b67ea86512c0fa439f3fc3759ee6ebf431948d5588750e2434"
+    }
+  },
+  ...
+```
+- 到 `social-recovery-dapp/src/pages/abi/SocialRecoveryConfig.js`中的 `export const CONTACT_ADDRESS = `後貼上
+```
+export const CONTACT_ADDRESS = "0xDE116b7427AE7d11175BBe0ADf16c7B476A01475";
+```
+- 再者是「合約ABI」，到`social-recovery-dapp/contract/build/contracts/SocialRecoveryWallet.json` 中使用 Ctrl+F 查找 `"abi":` 就可以複製該 abi 的值
+- 同樣到 `social-recovery-dapp/src/pages/abi/SocialRecoveryConfig.js`中的 `export const CONTACT_ABI = `後貼上
 
 ## 確認 console 是導向正確的路徑
 ```bash
